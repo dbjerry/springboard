@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="col-sm-3 col-md-2 sidebar">
 	<ul class="nav nav-sidebar">
-		<li class="active"><a href="/main.jsp">Main<span class="sr-only">(current)</span></a></li>
+		<li class="active"><a href="/main">Main<span class="sr-only">(current)</span></a></li>
 		
 		<c:if test="${S_USER.userId != null}">
 			<li class="active"><a href="/board/addBoard.jsp">게시판 생성 및 수정</a></li>

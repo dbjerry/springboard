@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>index.jsp</title>
 <script type="text/javascript">
-	document.location="/user/loginView";
+	document.location="/loginCon/loginView";
 </script>
 </head>
 <body>

@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
-	UserVO S_USER = (UserVO)session.getAttribute("userVo");
+	UserVO S_USER = (UserVO)session.getAttribute("S_USER");
 %>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -19,11 +19,7 @@
 			
 			<a class="navbar-brand" href="#">JSP/SPRING
 				<c:if test="${S_USER.name != null }">
-					<fmt:bundle basename="kr.or.ddit.resource.msg.msg">
-						<fmt:message key="visitor">
-							<fmt:param value="${S_USER.name}"></fmt:param>
-						</fmt:message>
-					</fmt:bundle>
+					${S_USER.name} 님 환영합니다.
 				</c:if>
 				
 			</a>
@@ -34,7 +30,7 @@
 				<li><a href="#">Settings</a></li>
 				<li><a href="#">Profile</a></li>
 				<li><a href="#">Help</a></li>
-				<li><a href="/logout">Logout</a></li>
+				<li><a href="/loginCon/logout">Logout</a></li>
 			</ul>
 			<form class="navbar-form navbar-right">
 				<input type="text" class="form-control" placeholder="Search...">

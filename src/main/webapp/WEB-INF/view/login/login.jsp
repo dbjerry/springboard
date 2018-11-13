@@ -41,7 +41,7 @@
 	<div class="div_out">
 		<div class="div_in">
 			<div class="centered">
-				<form action="/user/loginProcess" method="post">
+				<form action="/loginCon/loginProcess" method="post">
 					<h1>Login :)</h1>
 					<input type="text" name="userId" id="userId" required autofocus placeholder="Give me your ID"><br>
 					<input type="password" name="pass" id="pass" placeholder="Your secret password" required><br>
