@@ -12,6 +12,10 @@ INSERT INTO rangers VALUES ('cony', '코니');
 INSERT INTO rangers VALUES ('sally', '샐리');
 
 
+-- board
+DELETE FROM board;
+
+
 --jspuser
 DELETE FROM jspuser;
 
@@ -137,4 +141,14 @@ INSERT INTO jspuser VALUES ('xxxx20','xxxx','4affea9ab1a488ab4b83227cfbed2e18b94
 
 -- 월단위 달력 생성 데이터 초기화
 DELETE FROM calendar WHERE ymd LIKE '201811%';
+
+
+-- 7건
+INSERT INTO board VALUES ('00004','minions','자유게시판','Y','18/10/21');
+INSERT INTO board VALUES ('00002','minions','QnA게시판','Y','18/10/21');
+INSERT INTO board VALUES ('00015','minions','테스트게시판','Y','18/10/21');
+INSERT INTO board VALUES ('00016','minions','미사용게시판','N','18/10/21');
+INSERT INTO board VALUES ('00017','minions','테스트게시판2','N','18/10/21');
+INSERT INTO board VALUES ('00018','minions','시나리오게시판1','N','18/10/26');
+INSERT INTO board VALUES ('00019','minions','시나리오게시판2','Y','18/10/26');
 

@@ -7,7 +7,7 @@
 		<li class="active"><a href="/main">Main<span class="sr-only">(current)</span></a></li>
 		
 		<c:if test="${S_USER.userId != null}">
-			<li class="active"><a href="/board/addBoard.jsp">게시판 생성 및 수정</a></li>
+			<li class="active"><a href="/board/addBoard">게시판 생성 및 수정</a></li>
 		</c:if>
 
 		<c:forEach items="${boardList }" var="leftBoardList">
@@ -15,7 +15,7 @@
 				<c:when test="${leftBoardList.board_yn == 'Y'}">
 					<li id="board" class="active">
 						<a href=
-						"/postsPageList?page=1&pageSize=10&board_id=${leftBoardList.board_id }&board_name=${leftBoardList.board_name }">
+						"/posts/postsPageList?page=1&pageSize=10&board_id=${leftBoardList.board_id }&board_name=${leftBoardList.board_name }">
 						${leftBoardList.board_name }</a>
 					</li>
 				</c:when>

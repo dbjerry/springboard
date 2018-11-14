@@ -12,4 +12,12 @@
 		<put-attribute name="content" value="/WEB-INF/view/main.jsp"></put-attribute>
 	</definition>
 	
+	<definition name="addBoard" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/board/addBoard.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="posts" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/posts/posts.jsp"></put-attribute>
+	</definition>
+	
 </tiles-definitions>
