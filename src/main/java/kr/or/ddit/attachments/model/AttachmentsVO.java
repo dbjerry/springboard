@@ -26,5 +26,10 @@ public class AttachmentsVO {
 		this.posts_no = posts_no;
 	}
 	
+	@Override
+	public String toString() {
+		return "AttachmentsVO [atta_no=" + atta_no + ", atta_file=" + atta_file + ", posts_no=" + posts_no + "]";
+	}
+	
 }
 

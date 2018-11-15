@@ -1,17 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<title>Insert title here</title>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="shortcut icon" href="favicon.ico" />
 <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-
-
 <script src="/SE2/js/HuskyEZCreator.js"></script>
 <script type="text/javascript">
 	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함.
@@ -126,75 +117,60 @@
 		return true;
 	}
 </script>
-<%@ include file="/WEB-INF/view/common/basicLib.jsp"%>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</head>
 <form id="hiddenFrm" action="/updateAttachFile" method="post">
 	<input type="hidden" id="attaFileName" name="attaFileName">
 </form>
-<body>
-<%@ include file="/WEB-INF/view/common/header.jsp"%>
-<div class="container-fluid">
-	<div class="row">
-		
-		<%@ include file="/WEB-INF/view/common/left.jsp"%>
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main tests">
-		
-			<form action="/postsUpdateForm" method="post" id="frm"
-				class="form-horizontal" role="form" enctype="multipart/form-data">
-				<!-- "/addPostsForm" ==> PostsServlet.java -->	
-				<input type="hidden" name="board_id" value="${r_postsvo.board_id }">
-				<input type="hidden" name="posts_no" value="${r_postsvo.posts_no }">
-				<div class="form-group">
-					<label for="userNm" class="col-sm-2 control-label">제목</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" style="width: 700px;" id="posts_title" 
-							name="posts_title" readonly value="${r_postsvo.posts_title }">
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-sm-10">
-						<label for="userNm" class="col-sm-2 control-label">내용</label>
-						<textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;">
-							${r_postsvo.posts_cnt }
-						</textarea> 
-						<!-- <input type="button" id="savebutton" value="서버전송" /> -->
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
-					<div class="col-sm-10">
-						<c:choose>
-							<c:when test="${update_attaList != null }">
-								<c:forEach items="${update_attaList}" var="updateAtta">
-									<div>
-										<input type="hidden" id="attafile" name="attafile" value="${updateAtta.atta_no }">
-										<input type="text" readonly value="${updateAtta.atta_file}">
-										<input type="button" class="deleteAtta" value="삭제">
-									</div>
-								</c:forEach>
-							</c:when>
-						</c:choose>
-						<div id="attachFileDiv">
-							<input type="hidden" id="attaListSize" value="${update_attaList.size() }">
-							<input type="file" name="files4" value="" size="40">
-							<input type="button" value="추가" onclick="attachFile.add()" style="margin-left:5px">
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button id="savebutton" type="button" class="btn btn-default">수정</button>
-					</div>
-				</div>
-				
-			</form>
+<form action="/posts/postsUpdate" method="post" id="frm"
+	class="form-horizontal" role="form" enctype="multipart/form-data">
+	<!-- "/addPostsForm" ==> PostsServlet.java -->	
+	<input type="hidden" name="board_id" value="${r_postsvo.board_id }">
+	<input type="hidden" name="posts_no" value="${r_postsvo.posts_no }">
+	<div class="form-group">
+		<label for="userNm" class="col-sm-2 control-label">제목</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" style="width: 700px;" id="posts_title" 
+				name="posts_title" readonly value="${r_postsvo.posts_title }">
 		</div>
 	</div>
-</div>	
-</body>
-</html>
+	
+	<div class="form-group">
+		<div class="col-sm-10">
+			<label for="userNm" class="col-sm-2 control-label">내용</label>
+			<textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;">
+				${r_postsvo.posts_cnt }
+			</textarea> 
+			<!-- <input type="button" id="savebutton" value="서버전송" /> -->
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
+		<div class="col-sm-10">
+			<c:choose>
+				<c:when test="${update_attaList != null }">
+					<c:forEach items="${update_attaList}" var="updateAtta">
+						<div>
+							<input type="hidden" id="attafile" name="attafile" value="${updateAtta.atta_no }">
+							<input type="text" readonly value="${updateAtta.atta_file}">
+							<input type="button" class="deleteAtta" value="삭제">
+						</div>
+					</c:forEach>
+				</c:when>
+			</c:choose>
+			<div id="attachFileDiv">
+				<input type="hidden" id="attaListSize" value="${update_attaList.size() }">
+				<input type="file" name="files4" value="" size="40">
+				<input type="button" value="추가" onclick="attachFile.add()" style="margin-left:5px">
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="savebutton" type="button" class="btn btn-default">수정</button>
+		</div>
+	</div>
+	
+</form>

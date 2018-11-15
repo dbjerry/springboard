@@ -33,7 +33,9 @@
 				<li><a href="/loginCon/logout">Logout</a></li>
 			</ul>
 			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" placeholder="Search...">
+				<input type="text" class="form-control" name="postsSearch" placeholder="Search..."
+				
+				>
 			</form>
 		</div>
 	</div>

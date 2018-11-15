@@ -20,4 +20,20 @@
 		<put-attribute name="content" value="/WEB-INF/view/posts/posts.jsp"></put-attribute>
 	</definition>
 	
+	<definition name="addpostsForm" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/posts/addPostsForm.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="postsDetail" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/posts/postsDetail.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="postsUpdateForm" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/posts/postsUpdateForm.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="addReplyPostsForm" extends="basicLayout">
+		<put-attribute name="content" value="/WEB-INF/view/posts/addReplyPostsForm.jsp"></put-attribute>
+	</definition>
+	
 </tiles-definitions>
