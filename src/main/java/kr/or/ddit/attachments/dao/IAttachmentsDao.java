@@ -24,4 +24,14 @@ public interface IAttachmentsDao {
 	 */
 	public int insertAtta(AttachmentsVO attavo);
 	
+	/**
+	 * Method : deleteAtta
+	 * 작성자 : jerry
+	 * 변경이력 :
+	 * @param attano
+	 * @return
+	 * Method 설명 : 첨부파일 삭제
+	 */
+	int deleteAtta(String attaFileName);
+	
 }

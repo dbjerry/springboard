@@ -91,5 +91,14 @@
 				<!-- postsPaginationHtml.jsp -->
 			</ul>
 		</div>
+		<form class="navbar-form navbar-right" action="javascript:getPostsListHtml()">
+			<select name="searchOption">
+				<option value="posts_title">제목</option>
+				<option value="posts_cnt">내용</option>
+				<option value="userid">작성자</option>
+			</select>
+			<input type="text" class="form-control" name="postsSearch"/>
+			<input type="submit" class="btn btn-default pull-right" value="검색"/>
+		</form>
 	</div>	
 </div>

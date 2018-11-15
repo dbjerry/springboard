@@ -38,4 +38,17 @@ public class AttachmentsDao implements IAttachmentsDao {
 		return template.insert("atta.insertAtta", attavo);
 	}
 
+	/**
+	 * Method : deleteAtta
+	 * 작성자 : jerry
+	 * 변경이력 :
+	 * @param attano
+	 * @return
+	 * Method 설명 : 첨부파일 삭제
+	 */
+	@Override
+	public int deleteAtta(String attaFileName) {
+		return template.delete("atta.deleteAtta", attaFileName);
+	}
+
 }

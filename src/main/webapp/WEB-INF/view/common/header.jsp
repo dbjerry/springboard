@@ -6,7 +6,6 @@
 <%
 	UserVO S_USER = (UserVO)session.getAttribute("S_USER");
 %>
-
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -32,10 +31,9 @@
 				<li><a href="#">Help</a></li>
 				<li><a href="/loginCon/logout">Logout</a></li>
 			</ul>
+			
 			<form class="navbar-form navbar-right">
-				<input type="text" class="form-control" name="postsSearch" placeholder="Search..."
-				
-				>
+				<input type="text" class="form-control" placeholder="Search">
 			</form>
 		</div>
 	</div>

@@ -26,6 +26,7 @@
 		                ORDER SIBLINGS BY group_no desc, posts_date asc
 		                ) A
 		        WHERE	board_id = #{boardvo.board_id}
+		        
 		        )
 		WHERE   rnum BETWEEN #{pagevo.page} * #{pagevo.pageSize} - (#{pagevo.pageSize}-1) AND #{pagevo.page} * #{pagevo.pageSize}
 	</select>

@@ -19,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.or.ddit.attachments.model.AttachmentsVO;
 import kr.or.ddit.attachments.service.IAttachmentsService;
@@ -170,7 +172,7 @@ public class PostsController {
 	* Method 설명 : 게시글 등록(부모)
 	*/
 	@RequestMapping(value="/insertParentPosts", method=RequestMethod.POST)
-	public String insertParentPosts(HttpServletRequest request,
+	public String insertParentPosts(MultipartHttpServletRequest request,
 									BoardVO boardvo, UserVO uservo, PostsVO postsvo, AttachmentsVO attachvo, 
 									Model model) throws IOException, ServletException {
 		uservo = (UserVO)request.getSession().getAttribute("S_USER");
@@ -183,20 +185,17 @@ public class PostsController {
 		
 		if(insertCnt > 0) {
 			for(int i = 1; i <= 5; i++) {
-				Part attachments = request.getPart("attachments"+i);
+				MultipartFile attachments = request.getFile("attachments"+i);
 				
 				if(attachments != null) {
 					
-					String contentDisposition = attachments.getHeader("Content-disposition");
-					
-					String fileName = StringUtil.getFileName(contentDisposition);
+					String fileName = attachments.getOriginalFilename();
 					
 					String path = request.getServletContext().getRealPath("/attachfile");
 					
 					String attachfile = null;
 					if(!(fileName.equals(""))){
-						attachments.write(path + File.separator + fileName);
-						//attachments.delete();
+						attachments.transferTo(new File(path + File.separator + fileName));
 					
 						attachfile = "/attachfile/" + fileName;
 						
@@ -329,6 +328,16 @@ public class PostsController {
 		return "redirect:/posts/postsPageList?page=1&pageSize=10&board_id="+boardvo.getBoard_id();
 	}
 	
+	/**
+	* Method : addReplyPostsForm
+	* 작성자 : jerry
+	* 변경이력 :
+	* @param posts_no
+	* @param board_id
+	* @param model
+	* @return
+	* Method 설명 : 답글로 이동
+	*/
 	@RequestMapping("/addReplyPostsForm")
 	public String addReplyPostsForm(@RequestParam("posts_no")String posts_no, 
 									@RequestParam("board_id")String board_id,
@@ -339,6 +348,16 @@ public class PostsController {
 		return "addReplyPostsForm";
 	}
 	
+	/**
+	* Method : addReplyPosts
+	* 작성자 : jerry
+	* 변경이력 :
+	* @param request
+	* @param boardvo
+	* @param postsvo
+	* @return
+	* Method 설명 : 답글 작성
+	*/
 	@RequestMapping("/addReplyPosts")
 	public String addReplyPosts(HttpServletRequest request, BoardVO boardvo, PostsVO postsvo) {
 		UserVO uservo = new UserVO();
@@ -354,6 +373,13 @@ public class PostsController {
 		postsService.insertChildPosts(postsvo);
 		
 		return "redirect:/posts/postsPageList?page=1&pageSize=10&board_id="+boardvo.getBoard_id();
+	}
+	
+	@RequestMapping("/updateAttachFile")
+	public String updateAttachFile(@RequestParam("attaFileName")String attaFileName, Model model) {
+		attachService.deleteAtta(attaFileName);
+		
+		return "postsUpdateForm";
 	}
 	
 }

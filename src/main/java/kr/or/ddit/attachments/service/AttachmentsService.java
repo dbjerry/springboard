@@ -48,7 +48,18 @@ public class AttachmentsService implements IAttachmentsService{
 	public int insertAtta(AttachmentsVO attavo) {
 		return attachDao.insertAtta(attavo);
 	}
-	
-	
+
+	/**
+	 * Method : deleteAtta
+	 * 작성자 : jerry
+	 * 변경이력 :
+	 * @param attano
+	 * @return
+	 * Method 설명 : 첨부파일 삭제
+	 */
+	@Override
+	public int deleteAtta(String attaFileName) {
+		return attachDao.deleteAtta(attaFileName);
+	}
 	
 }
