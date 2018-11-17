@@ -4,7 +4,7 @@
 <li>
 	<c:choose>
 		<c:when test="${page eq 1}">
-			<a href="javascript:getPostsListHtml(1)"
+			<a href="javascript:getPostsListHtml(1);"
 				aria-label="Previous" id="disabled"><span aria-hidden="true">&laquo;</span></a>
 		</c:when>
 		<c:otherwise>

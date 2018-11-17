@@ -6,11 +6,14 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.attachments.dao.AttachmentsDao;
 import kr.or.ddit.attachments.dao.IAttachmentsDao;
 import kr.or.ddit.attachments.model.AttachmentsVO;
+import kr.or.ddit.attachments.service.IAttachmentsService;
 import kr.or.ddit.board.model.BoardVO;
 import kr.or.ddit.posts.dao.IPostsDao;
 import kr.or.ddit.posts.model.PostsVO;
@@ -20,6 +23,12 @@ import kr.or.ddit.util.model.PageVO;
 public class PostsService implements IPostsService{
 	@Resource(name="postsDao")
 	private IPostsDao postsDao;
+	
+	@Resource(name="attachmentsService")
+	private IAttachmentsService attachService;
+	
+	@Resource(name="attachmentsDao")
+	private IAttachmentsDao attachDao;
 	
 	/* 기본생성자 */
 	public PostsService() {}
@@ -44,19 +53,18 @@ public class PostsService implements IPostsService{
 	public Map<String, Object> postsPageList(Map<String, Object> map) {
 		List<PostsVO> postsList = postsDao.postsPageList(map);
 		
-		BoardVO boardvo = (BoardVO) map.get("boardvo");
-		
-		int postsCnt = postsDao.postsCnt(boardvo.getBoard_id());
+		int postsCnt = postsDao.postsCnt(map);
 		
 		PageVO page = (PageVO) map.get("pagevo");
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("postsList", postsList);
 		resultMap.put("postsCnt", (int)Math.ceil((double)postsCnt / page.getPageSize()));
+		resultMap.put("page", page.getPage());
 		
 		return resultMap;
 	}
-
+	
 	/**
 	 * Method : postsCnt
 	 * 작성자 : jerry
@@ -66,8 +74,8 @@ public class PostsService implements IPostsService{
 	 * Method 설명 : 게시글 총 갯수
 	 */
 	@Override
-	public int postsCnt(String boardId) {
-		return postsDao.postsCnt(boardId);
+	public int postsCnt(Map<String, Object> cntMap) {
+		return postsDao.postsCnt(cntMap);
 	}
 
 	/**
@@ -119,11 +127,15 @@ public class PostsService implements IPostsService{
 	@Override
 	public int updatePosts(Map<String, Object> map) {
 		PostsVO postsvo = (PostsVO) map.get("postsvo");
+		String[] attafile = (String[]) map.get("attafile");
 		
 		int postsCnt = postsDao.updatePosts(postsvo);
 		
-		IAttachmentsDao attachDao = new AttachmentsDao();
-		List<AttachmentsVO> attaList = (List<AttachmentsVO>) map.get("attavo");
+		for(String str : attafile) {
+			attachService.deleteAtta(str);
+		}
+		
+		List<AttachmentsVO> attaList = (List<AttachmentsVO>) map.get("attaList");
 		
 		int attaCnt = 0;
 		for(AttachmentsVO attavo : attaList) {

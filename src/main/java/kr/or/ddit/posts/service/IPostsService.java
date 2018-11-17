@@ -1,5 +1,6 @@
 package kr.or.ddit.posts.service;
 
+import java.util.List;
 import java.util.Map;
 
 import kr.or.ddit.posts.model.PostsVO;
@@ -24,7 +25,7 @@ public interface IPostsService {
 	 * @return
 	 * Method 설명 : 게시글 총 갯수
 	 */
-	public int postsCnt(String boardId);
+	int postsCnt(Map<String, Object> cntMap);
 
 	/**
 	* Method : getPostsDetail

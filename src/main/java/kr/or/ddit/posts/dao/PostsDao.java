@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import kr.or.ddit.posts.model.PostsVO;
@@ -29,7 +31,7 @@ public class PostsDao implements IPostsDao {
 		
 		return pageList;
 	}
-
+	
 	/**
 	 * Method : postsCnt
 	 * 작성자 : jerry
@@ -39,8 +41,8 @@ public class PostsDao implements IPostsDao {
 	 * Method 설명 : 게시글 총 갯수
 	 */
 	@Override
-	public int postsCnt(String boardId) {
-		return template.selectOne("posts.postsCnt", boardId);
+	public int postsCnt(Map<String, Object> cntMap) {
+		return template.selectOne("posts.postsCnt", cntMap);
 	}
 
 	/**
@@ -119,7 +121,6 @@ public class PostsDao implements IPostsDao {
 	public int insertChildPosts(PostsVO postsvo) {
 		return template.insert("posts.insertChildPosts", postsvo);
 	}
-	
-	
+
 }
 

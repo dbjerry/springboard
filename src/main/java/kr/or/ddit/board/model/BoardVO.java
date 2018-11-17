@@ -40,5 +40,11 @@ public class BoardVO {
 		this.userId = userId;
 	}
 	
+	@Override
+	public String toString() {
+		return "BoardVO [board_id=" + board_id + ", board_name=" + board_name + ", board_yn=" + board_yn
+				+ ", board_date=" + board_date + ", userId=" + userId + "]";
+	}
+	
 }
 

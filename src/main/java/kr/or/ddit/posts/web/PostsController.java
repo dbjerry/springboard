@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +35,8 @@ import kr.or.ddit.util.model.PageVO;
 @RequestMapping("/posts")
 @Controller
 public class PostsController {
+	Logger logger = LoggerFactory.getLogger(PostsController.class);
+	
 	@Resource(name="postsService")
 	private IPostsService postsService;
 	
@@ -73,18 +74,23 @@ public class PostsController {
 	* Method 설명 : 게시글리스트 ajax적용
 	*/
 	@RequestMapping("/postsPageListAjaxHtml")
-	public String postsPageListHtml(BoardVO boardvo, PageVO pagevo, Model model) {
+	public String postsPageListHtml(@RequestParam("searchOption")String searchOption, 
+									@RequestParam("postsSearch")String postsSearch,
+									BoardVO boardvo, PageVO pagevo, Model model) {
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardvo", boardvo);
 		map.put("pagevo", pagevo);
+		map.put("postsSearch", postsSearch);
+		map.put("searchOption", searchOption);
+		
+		logger.debug("controller map : {}", map);
 		
 		Map<String, Object> resultMap = postsService.postsPageList(map);
 		
-		Logger logger = LoggerFactory.getLogger(PostsController.class);
-		logger.debug("postsList.size() : {}", (List<PostsVO>)resultMap.get("postsList"));
+		logger.debug("controller resultMap : {}", resultMap);
 		
 		model.addAllAttributes(resultMap);
-		model.addAttribute("page", pagevo.getPage());
 		
 		return "posts/postsPageListHtml";
 	}
@@ -100,10 +106,14 @@ public class PostsController {
 	* Method 설명 : 페이징처리 ajax적용
 	*/
 	@RequestMapping("/postsPaginationAjaxHtml")
-	public String postsPaginationHtml(BoardVO boardvo, PageVO pagevo, Model model) {
+	public String postsPaginationHtml(@RequestParam("searchOption")String searchOption, 
+										@RequestParam("postsSearch")String postsSearch,
+										BoardVO boardvo, PageVO pagevo, Model model) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boardvo", boardvo);
 		map.put("pagevo", pagevo);
+		map.put("postsSearch", postsSearch);
+		map.put("searchOption", searchOption);
 		
 		Map<String, Object> resultMap = postsService.postsPageList(map);
 		
@@ -257,29 +267,30 @@ public class PostsController {
 	* Method 설명 : 게시글 수정
 	*/
 	@RequestMapping("/postsUpdate")
-	public String postsUpdate(@RequestParam("smarteditor")String posts_cnt, HttpServletRequest request, 
-								AttachmentsVO attachvo, PostsVO postsvo, 
+	public String postsUpdate(@RequestParam("attafile_arr")String attafile_arr, HttpServletRequest request,
+								@RequestParam("smarteditor")String posts_cnt, @RequestParam("files")MultipartFile[] files, 
+								PostsVO postsvo, 
 								BoardVO boardvo, Model model) throws IOException, ServletException {
 		Map<String , Object> map = new HashMap<String, Object>();
 		List<AttachmentsVO> attaList = new ArrayList<AttachmentsVO>();
 		
+		//split이 읽을 구분자가 문자열 맨 앞에 있으면 0번 인덱스에 공백을 저장한다.
+		String[] attafile = attafile_arr.split(",");
+		
 		postsvo.setPosts_cnt(posts_cnt);
 		
-		for(int i = 0; i < 5; i++) {
-			Part attachments = request.getPart("files" + i);
-			
-			if(attachments != null) {
-				String contentDisposition = attachments.getHeader("content-disposition");
+		for(MultipartFile file : files) {
+			AttachmentsVO attachvo = new AttachmentsVO();
+			if(file != null) {
 				
-				String fileName = StringUtil.getFileName(contentDisposition);
+				String fileName = file.getOriginalFilename();
 				
 				String path = request.getServletContext().getRealPath("/attachfile");
 				
 				String attachfile = null;
 				
 				if(!(fileName.equals(""))) {
-					attachments.write(path + File.separator + fileName);
-					attachments.delete();
+					file.transferTo(new File(path + File.separator + fileName));
 					
 					attachfile = "/attachfile/" + fileName;
 					
@@ -287,17 +298,17 @@ public class PostsController {
 					continue;
 				}
 				
+				String currentPostsNo = postsvo.getPosts_no();
+				
 				attachvo.setAtta_file(attachfile);
-				attachvo.setPosts_no(posts_cnt);
+				attachvo.setPosts_no(currentPostsNo);
 				
 				attaList.add(attachvo);
 			}
 		}
 		map.put("postsvo", postsvo);
-		map.put("attavo", attaList);
-		
-		Logger logger = LoggerFactory.getLogger(PostsController.class);
-		logger.debug("map : {}", map);
+		map.put("attaList", attaList);
+		map.put("attafile", attafile); // 삭제를 위한 attafile
 		
 		int updateCnt = postsService.updatePosts(map);
 		
@@ -373,13 +384,6 @@ public class PostsController {
 		postsService.insertChildPosts(postsvo);
 		
 		return "redirect:/posts/postsPageList?page=1&pageSize=10&board_id="+boardvo.getBoard_id();
-	}
-	
-	@RequestMapping("/updateAttachFile")
-	public String updateAttachFile(@RequestParam("attaFileName")String attaFileName, Model model) {
-		attachService.deleteAtta(attaFileName);
-		
-		return "postsUpdateForm";
 	}
 	
 }

@@ -62,7 +62,6 @@ public class LoginController {
 		
 		UserVO getUser = userService.selectUser(userId);
 		List<BoardVO> boardList = boardService.selectAllBoard();
-		System.out.println("LoginController line 69) boardList : " + boardList);
 		String encryptPass = KISA_SHA256.encrypt(pass);
 			
 		if(getUser != null && getUser.authPass(encryptPass)){

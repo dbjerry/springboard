@@ -6,8 +6,13 @@
 	.userClick {
 		cursor: pointer;
 	}
+	#disabled {
+		pointer-events: none;
+		cursor: default;
+	}
 </style>
 <script>
+	
 	$(document).ready(function(){
 		console.log("document.ready");
 		
@@ -28,38 +33,77 @@
 		});
 		
 		getPostsListHtml(1);
-		getPostsPaginationHtml(1);
+		//getPostsPaginationHtml(1);
+		
 	});
 	
 	function getPostsListHtml(page){
 		var board_id = '${boardvo.board_id}';
 		var pageSize = 10;
+		var postsSearch = $("#searchFrm").find("#postsSearch").val();
+		//var searchOption = $(this).closest("#searchFrm").find("#searchOption").val();
+		var searchOption = $("#searchFrm").find("#searchOption option:selected").val();
 		
 		$.ajax({
 			url : "/posts/postsPageListAjaxHtml",
-			type : "GET",
-			data : "page="+page+"&pageSize="+pageSize+"&board_id="+board_id,
+			type : "POST",
+			data: {page : page, pageSize : pageSize, board_id : board_id, searchOption : searchOption, postsSearch : postsSearch },
+			//JSON.stringify(
 			success : function(data){
-				console.log(data);
+				
 				$("#postsList").html(data);
 			}
 		});
-	}
-	
-	function getPostsPaginationHtml(page){
-		var board_id = '${boardvo.board_id}';
-		var pageSize = 10;
 		
 		$.ajax({
 			url: "/posts/postsPaginationAjaxHtml",
-			type: "GET",
-			data: "page="+page+"&pageSize="+pageSize+"&board_id="+board_id,
+			type: "POST",
+			data: {page : page, pageSize : pageSize, board_id : board_id, searchOption : searchOption, postsSearch : postsSearch },
 			success: function(data){
 				
 				$(".pagination").html(data);
 			}
 		});
+		
+		$("#searchBtn").on("click", function(){
+			var postsSearch = $(this).closest("#searchFrm").find("#postsSearch").val();
+			//var searchOption = $(this).closest("#searchFrm").find("#searchOption").val();
+			var searchOption = $(this).closest("#searchFrm").find("#searchOption option:selected").val();
+			console.log(board_id);
+			console.log(page);
+			console.log(pageSize);
+			console.log("postsSearch : " + postsSearch);
+			console.log("searchOption : " + searchOption);
+			$.ajax({
+				url: "/posts/postsPageListAjaxHtml",
+				type: "POST",
+				data: {page : page, pageSize : pageSize, board_id : board_id, searchOption : searchOption, postsSearch : postsSearch },
+				//data: "page="+page+"&pageSize="+pageSize+"&board_id="+board_id,
+				success: function(data){
+					
+					$("#postsList").html(data);
+				}
+			});
+		});
 	}
+	
+// 	$(function(){
+// 		$("#searchBtn").on("click", function(){
+// 			var postsSearch = $(this).closest("#searchFrm").find("#postsSearch").val();
+// 			//var searchOption = $(this).closest("#searchFrm").find("#searchOption").val();
+// 			var searchOption = $(this).closest("#searchFrm").find("#searchOption option:selected").val();
+// 			console.log("postsSearch : " + postsSearch);
+// 			console.log("searchOption : " + searchOption);
+// 			$.ajax({
+// 				url: "/posts/postsSearch",
+// 				type: "POST",
+// 				data: {page : page, pageSize : pageSize, board_id : board_id, searchOption : searchOption, postsSearch : postsSearch },
+// 				success: function(data){
+// 					$("#postsList").html(data);
+// 				}
+// 			});
+// 		})
+// 	});
 </script>
 <form id="frm" action="/posts/postsDetail" method="get">
 	<input type="hidden" id="posts_no" name="posts_no"/>
@@ -86,19 +130,19 @@
 		<a class="btn btn-default pull-right"
 				href="/posts/addPostsForm?board_id=${boardvo.board_id}">게시글 등록</a>
 		
-		<div class="text-center">
+		<div class="text-center" id="paginationDiv">
 			<ul class="pagination">
 				<!-- postsPaginationHtml.jsp -->
 			</ul>
 		</div>
-		<form class="navbar-form navbar-right" action="javascript:getPostsListHtml()">
-			<select name="searchOption">
+		<div id="searchFrm" class="navbar-form navbar-right">
+			<select id="searchOption" name="searchOption">
 				<option value="posts_title">제목</option>
 				<option value="posts_cnt">내용</option>
 				<option value="userid">작성자</option>
 			</select>
-			<input type="text" class="form-control" name="postsSearch"/>
-			<input type="submit" class="btn btn-default pull-right" value="검색"/>
-		</form>
+			<input type="text" class="form-control" name="postsSearch" id="postsSearch"/>
+			<input type="button" id="searchBtn" class="btn btn-default pull-right" value="검색"/>
+		</div>
 	</div>	
 </div>
