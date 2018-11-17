@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.test.ServiceDaoTestConfig;
 import kr.or.ddit.user.model.UserVO;
-import kr.or.ddit.user.web.UserControllerTest;
 
 public class UserServiceTest extends ServiceDaoTestConfig {
-	Logger logger = LoggerFactory.getLogger(UserControllerTest.class);
+	Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
 	
 	@Resource(name="userService")
 	IUserService userService;
@@ -25,10 +24,9 @@ public class UserServiceTest extends ServiceDaoTestConfig {
 		
 		/***When***/
 		UserVO user = userService.selectUser(userId);
-		logger.debug("user : {}");
 		
 		/***Then***/
-		assertEquals("minions", user.getName());
+		assertEquals("미니언즈", user.getName());
 
 	}
 

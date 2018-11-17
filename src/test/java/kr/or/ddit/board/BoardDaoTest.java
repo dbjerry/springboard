@@ -28,8 +28,8 @@ public class BoardDaoTest extends ServiceDaoTestConfig{
 		/***When***/
 		BoardVO boardvo = new BoardVO();
 		boardvo.setUserId("minions");
-		boardvo.setBoard_name("insertTest");
-		boardvo.setBoard_yn("y");
+		boardvo.setBoard_name("단위테스트");
+		boardvo.setBoard_yn("Y");
 		
 		int insertCnt = boardService.insertBoard(boardvo);
 		

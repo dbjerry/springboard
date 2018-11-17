@@ -30,11 +30,11 @@ public class ServiceDaoTestConfig {
 		//delete query 호출 ==> sql 스크립트를 실행
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		populator.addScript(new ClassPathResource("kr/or/ddit/config/db/dbInit.sql"));
-		//populator.addScripts(new ClassPathResource("kr/or/ddit/config/db/dbInit.sql2"));
+
 		DatabasePopulatorUtils.execute(populator, datasource);
 
 	}
-	
+
 	@Ignore
 	@Test
 	public void test() {
